@@ -12,7 +12,7 @@ Photoresistor* photoresistor;
 void setup() {
   led = new DigitalLedImpl(4);
   tempSensor = new TempSensorImpl(34);
-  photoresistor = new PhotoresistorImpl(2);
+  photoresistor = new PhotoresistorImpl(35);
   Serial.begin(9600);
 }
 
