@@ -51,16 +51,15 @@ public class DataService extends AbstractVerticle {
 		if (res == null) {
 			sendError(400, response);
 		} else {
-			float value = res.getFloat("value");
-			String place = res.getString("place");
-			long time = System.currentTimeMillis();
+			float temperature = res.getFloat("temperature");
+			int lux = res.getInteger("lux");
 			
-			values.addFirst(new DataPoint(value, time, place));
+			values.addFirst(new DataPoint(temperature, lux));
 			if (values.size() > MAX_SIZE) {
 				values.removeLast();
 			}
 			
-			log("New value: " + value + " from " + place + " on " + new Date(time));
+			log("New Temp: " + temperature + " Lux " + lux);
 			response.setStatusCode(200).end();
 		}
 	}
@@ -69,9 +68,8 @@ public class DataService extends AbstractVerticle {
 		JsonArray arr = new JsonArray();
 		for (DataPoint p: values) {
 			JsonObject data = new JsonObject();
-			data.put("time", p.getTime());
-			data.put("value", p.getValue());
-			data.put("place", p.getPlace());
+			data.put("lux", p.getLux());
+			data.put("temperature", p.getTemperature());
 			arr.add(data);
 		}
 		routingContext.response()

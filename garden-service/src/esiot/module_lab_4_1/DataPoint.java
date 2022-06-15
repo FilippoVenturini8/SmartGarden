@@ -1,25 +1,19 @@
 package esiot.module_lab_4_1;
 
 class DataPoint {
-	private double value;
-	private long time;
-	private String place;
+	private double temperature;
+	private int lux;
 	
-	public DataPoint(double value, long time, String place) {
-		this.value = value;
-		this.time = time;
-		this.place = place;
+	public DataPoint(double temperature, int lux) {
+		this.temperature = temperature;
+		this.lux = lux;
 	}
 	
-	public double getValue() {
-		return value;
+	public double getTemperature() {
+		return temperature;
 	}
 	
-	public long getTime() {
-		return time;
-	}
-	
-	public String getPlace() {
-		return place;
+	public int getLux() {
+		return lux;
 	}
 }
