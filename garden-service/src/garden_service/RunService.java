@@ -6,7 +6,7 @@ import io.vertx.core.Vertx;
  * Data Service as a vertx event-loop 
  */
 public class RunService {
-
+	private static boolean isLightSystemOn = false;
 
 	public static void main(String[] args) throws Exception{
 		Vertx vertx = Vertx.vertx();
@@ -18,6 +18,17 @@ public class RunService {
 		Thread.sleep(4000);
 		System.out.println("Ready.");
 		
-		channel.sendMsg("RECOVER");
+		while(true) {
+			if(!isLightSystemOn && service.activateLightSystem()) {
+				int value = service.getAnalogicLightValue();
+				channel.sendMsg("1|1|"+value+"|"+value);
+				isLightSystemOn = true;
+			}else if(isLightSystemOn && !service.activateLightSystem()) {
+				channel.sendMsg("0|0|0|0");
+				isLightSystemOn = false;
+			}
+			Thread.sleep(500);
+		}
+		
 	}
 }

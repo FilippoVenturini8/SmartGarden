@@ -24,6 +24,9 @@ public class DataService extends AbstractVerticle {
 	private int port;
 	private static final int MAX_SIZE = 10;
 	private LinkedList<DataPoint> values;
+	private boolean activateLightSystem = false;
+	private int analogicLightValue = 0;
+	private int lastLux = 0;
 	
 	public DataService(int port) {
 		values = new LinkedList<>();		
@@ -59,8 +62,22 @@ public class DataService extends AbstractVerticle {
 				values.removeLast();
 			}
 			
+			checkData();
+			
 			log("New Temp: " + temperature + " Lux " + lux);
 			response.setStatusCode(200).end();
+		}
+	}
+	
+	private void checkData() {
+		DataPoint lastMeasurement = values.getFirst();
+		int lux = lastMeasurement.getLux();
+		if(lux < 5 && lastLux != lux) {
+			activateLightSystem = true;
+			analogicLightValue = (int)(((lux*8)/5)-1);
+			System.out.println(analogicLightValue);
+		}else if(lastMeasurement.getLux() >= 5 && activateLightSystem) {
+			activateLightSystem = false;
 		}
 	}
 	
@@ -83,6 +100,14 @@ public class DataService extends AbstractVerticle {
 
 	private void log(String msg) {
 		System.out.println("[DATA SERVICE] "+msg);
+	}
+
+	public boolean activateLightSystem() {
+		return activateLightSystem;
+	}
+
+	public int getAnalogicLightValue() {
+		return analogicLightValue;
 	}
 
 }

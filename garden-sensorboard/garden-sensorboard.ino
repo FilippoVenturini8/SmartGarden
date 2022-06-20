@@ -32,7 +32,7 @@ void connectToWifi(const char* ssid, const char* password){
 void setup() {
   led = new DigitalLedImpl(4);
   tempSensor = new TempSensorImpl(32);
-  //photoresistor = new PhotoresistorImpl(35);
+  photoresistor = new PhotoresistorImpl(35);
   Serial.begin(115200); 
   connectToWifi(ssid, password);
 }
@@ -57,24 +57,21 @@ void loop() {
   /*led->switchOn();
   delay(1000);
   led->switchOff();
-  delay(1000);
-  Serial.println(photoresistor->getLux());
-  delay(100);*/
+  delay(1000);*/
+  //delay(100);
   if (WiFi.status()== WL_CONNECTED){      
-    
-    int code = sendData(serviceURI, 17.0, 2000);
+    int lux = photoresistor->getLux();
+    int code = sendData(serviceURI, 17.0, lux);
     if (code == 200){
        Serial.println("ok");   
     } else {
        Serial.println(String("error: ") + code);
     }
     
-    delay(5000);
+    delay(1000);
 
   } else {
     Serial.println("WiFi Disconnected... Reconnect.");
     connectToWifi(ssid, password);
   }
-  /*Serial.println(tempSensor->getTemperature());
-  delay(500);*/
 }

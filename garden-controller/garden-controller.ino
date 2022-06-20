@@ -2,10 +2,14 @@
 #include "scheduler.h"
 #include "task.h"
 #include "serial_communication_task.h"
+#include "light_system_task.h"
 
 Scheduler sched;
 
-bool switchDL1 = false;
+int switchDL1 = 0;
+int switchDL2 = 0;
+int valueAL1 = 0;
+int valueAL2 = 0;
 
 void setup() {
   /*digitalLed1 = new DigitalLedImpl(8);
@@ -19,6 +23,10 @@ void setup() {
   Task* serialCommunicationTask = new SerialCommunicationTask();
   serialCommunicationTask->init(100);
   sched.addTask(serialCommunicationTask);
+
+  Task* lightSystemTask = new LightSystemTask(8,7,6,5);
+  lightSystemTask->init(50);
+  sched.addTask(lightSystemTask);
   
   Serial.begin(9600);
 }
@@ -44,7 +52,4 @@ void loop() {
   digitalLed2->switchOff();
   delay(500);*/
   sched.schedule();
-  if(switchDL1){
-    digitalWrite(8, HIGH);
-  }
 }

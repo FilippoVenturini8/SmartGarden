@@ -7,5 +7,6 @@ PhotoresistorImpl::PhotoresistorImpl(int photoresistorPin){
 }
 
 int PhotoresistorImpl::getLux(){
-  return analogRead(this->photoresistorPin);
+  int value = analogRead(this->photoresistorPin);
+  return map(value, 0, 2500, 0, 7);
 }

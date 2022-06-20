@@ -16,6 +16,10 @@ class LightSystemTask: public Task {
  int pinDL2;
  int pinAL1;
  int pinAL2;
+ int lastDL1;
+ int lastDL2;
+ int lastAL1;
+ int lastAL2;
  
 public:
 
