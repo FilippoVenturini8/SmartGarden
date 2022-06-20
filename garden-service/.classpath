@@ -7,5 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+	<classpathentry kind="lib" path="lib/jssc-2.9.4.jar"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

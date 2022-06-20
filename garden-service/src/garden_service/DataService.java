@@ -1,4 +1,4 @@
-package esiot.module_lab_4_1;
+package garden_service;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;

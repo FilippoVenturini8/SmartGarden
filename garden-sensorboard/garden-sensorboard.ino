@@ -11,7 +11,7 @@
 const char* ssid = "TIM-22562475";
 const char* password = "o98UxyVtTv5Uc5z1ks5cIp8t";
 
-const char *serviceURI = "http://192.168.1.95:8080";
+const char *serviceURI = "http://192.168.1.96:8080";
 
 DigitalLed* led;
 TempSensor* tempSensor;
@@ -46,8 +46,6 @@ int sendData(String address, float temperature, int lux){
    String msg = 
     String("{ \"temperature\": ") + String(temperature) + 
     ", \"lux\": " + String(lux) +" }";
-
-   Serial.println(msg);
    
    int retCode = http.POST(msg);   
    http.end();  

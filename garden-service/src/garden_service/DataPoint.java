@@ -1,4 +1,4 @@
-package esiot.module_lab_4_1;
+package garden_service;
 
 class DataPoint {
 	private double temperature;
