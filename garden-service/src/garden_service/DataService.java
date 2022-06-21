@@ -75,8 +75,9 @@ public class DataService extends AbstractVerticle {
 		if(lux < 5 && lastLux != lux) {
 			activateLightSystem = true;
 			analogicLightValue = (int)(((lux*8)/5)-1);
+			lastLux = lux;
 			System.out.println(analogicLightValue);
-		}else if(lastMeasurement.getLux() >= 5 && activateLightSystem) {
+		}else if(lux >= 5 && activateLightSystem) {
 			activateLightSystem = false;
 		}
 	}
