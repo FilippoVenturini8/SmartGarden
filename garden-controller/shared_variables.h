@@ -9,4 +9,8 @@ extern int valueAL1;
 
 extern int valueAL2;
 
+extern int openIrrigation;
+
+extern int irrigationSpeed;
+
 #endif

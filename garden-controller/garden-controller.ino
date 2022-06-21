@@ -3,6 +3,7 @@
 #include "task.h"
 #include "serial_communication_task.h"
 #include "light_system_task.h"
+#include "irrigation_system_task.h"
 
 Scheduler sched;
 
@@ -10,6 +11,8 @@ int switchDL1 = 0;
 int switchDL2 = 0;
 int valueAL1 = 0;
 int valueAL2 = 0;
+int openIrrigation = 0;
+int irrigationSpeed = 0;
 
 void setup() {
   /*digitalLed1 = new DigitalLedImpl(8);
@@ -27,6 +30,10 @@ void setup() {
   Task* lightSystemTask = new LightSystemTask(8,7,6,5);
   lightSystemTask->init(50);
   sched.addTask(lightSystemTask);
+
+  Task* irrigationSystemTask = new IrrigationSystemTask(3);
+  irrigationSystemTask->init(50);
+  sched.addTask(irrigationSystemTask);
   
   Serial.begin(9600);
 }

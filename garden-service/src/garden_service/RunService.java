@@ -21,10 +21,10 @@ public class RunService {
 		while(true) {
 			if(!isLightSystemOn && service.activateLightSystem()) {
 				int value = service.getAnalogicLightValue();
-				channel.sendMsg("1|1|"+value+"|"+value);
+				channel.sendMsg("1|1|"+value+"|"+value+"|1|50");
 				isLightSystemOn = true;
 			}else if(isLightSystemOn && !service.activateLightSystem()) {
-				channel.sendMsg("0|0|0|0");
+				channel.sendMsg("0|0|0|0|1|30");
 				isLightSystemOn = false;
 			}
 			Thread.sleep(500);

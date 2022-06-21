@@ -61,6 +61,8 @@ void SerialCommunicationTask::readMsg(){
     String dL2 = splitString(receivedMsg, '|', 1);
     String aL1 = splitString(receivedMsg, '|', 2);
     String aL2 = splitString(receivedMsg, '|', 3);
+    String openIrrigationStr = splitString(receivedMsg, '|', 4);
+    String irrigationSpeedStr = splitString(receivedMsg, '|', 5);
 
     if(dL1 != "-1"){
       switchDL1 = dL1.toInt();
@@ -73,6 +75,12 @@ void SerialCommunicationTask::readMsg(){
     }
     if(aL2 != "-1"){
       valueAL2 = aL2.toInt();
+    }
+    if(openIrrigationStr != "-1"){
+      openIrrigation = openIrrigationStr.toInt();
+    }
+    if(irrigationSpeedStr != "-1"){
+      irrigationSpeed = irrigationSpeedStr.toInt();
     }
   }
   msgAvailable = false;
