@@ -13,4 +13,5 @@ extern int openIrrigation;
 
 extern int irrigationSpeed;
 
+extern String modality;
 #endif

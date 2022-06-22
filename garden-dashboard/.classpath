@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17/">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/jssc-2.9.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/filip/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-core/4.2.6/1d0ac3afe7cd5a632d1dabba88e1ad11c125785e/vertx-core-4.2.6.jar" sourcepath="C:/Users/filip/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-core/4.2.6/f9d432deadab80b6fe651514fbb6d5911a19291a/vertx-core-4.2.6-sources.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/filip/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-web-client/4.2.6/7bf4f3db69a40150a4a5f5cacedac53fd230563c/vertx-web-client-4.2.6.jar" sourcepath="C:/Users/filip/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-web-client/4.2.6/6e22421571ba444cf5f37715edcccaa34a0b05f1/vertx-web-client-4.2.6-sources.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+	<classpathentry kind="output" path="bin/default"/>
 </classpath>
