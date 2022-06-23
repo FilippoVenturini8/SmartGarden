@@ -3,6 +3,7 @@ package btlib;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public abstract class BluetoothChannel implements CommChannel {
 
     @Override
     public void sendMessage(final String message) {
+        Log.d("DIO", message);
         worker.write(message.getBytes());
     }
 

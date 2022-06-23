@@ -16,6 +16,7 @@ import com.example.garden_app.utils.C;
 
 import org.w3c.dom.Text;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import btlib.BluetoothChannel;
@@ -32,12 +33,13 @@ public class MainActivity extends AppCompatActivity {
     TextView txtLed4;
     TextView txtIrrigationSpeed;
 
-    private String led1 = "0";
-    private String led2 = "0";
-    private String led3 = "0";
-    private String led4 = "0";
-    private String openIrrigation = "0";
-    private String irrigationSpeed = "0";
+    private String led1;
+    private String led2;
+    private String led3;
+    private String led4;
+    private String openIrrigation;
+    private String irrigationSpeed;
+    private String modality;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 toAppend = "1";
             }
-            String message = toAppend+"|-1|-1|-1|-1|-1";
+            String message = toAppend+"|-1|-1|-1|-1|-1|-1";
             btChannel.sendMessage(message);
         });
 
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 toAppend = "1";
             }
-            String message = "-1|"+toAppend+"|-1|-1|-1|-1";
+            String message = "-1|"+toAppend+"|-1|-1|-1|-1|-1";
             btChannel.sendMessage(message);
         });
 
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             if(Integer.parseInt(led3) < 5){
                 toAppend = String.valueOf(Integer.parseInt(led3)+1);
             }
-            String message = "-1|-1|"+toAppend+"|-1|-1|-1";
+            String message = "-1|-1|"+toAppend+"|-1|-1|-1|-1";
             btChannel.sendMessage(message);
         });
 
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             if(Integer.parseInt(led3) > 0){
                 toAppend = String.valueOf(Integer.parseInt(led3)-1);
             }
-            String message = "-1|-1|"+toAppend+"|-1|-1|-1";
+            String message = "-1|-1|"+toAppend+"|-1|-1|-1|-1";
             btChannel.sendMessage(message);
         });
 
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
             if(Integer.parseInt(led4) < 5){
                 toAppend = String.valueOf(Integer.parseInt(led4)+1);
             }
-            String message = "-1|-1|-1|"+toAppend+"|-1|-1";
+            String message = "-1|-1|-1|"+toAppend+"|-1|-1|-1";
             btChannel.sendMessage(message);
         });
 
@@ -128,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             if(Integer.parseInt(led4) > 0){
                 toAppend = String.valueOf(Integer.parseInt(led4)-1);
             }
-            String message = "-1|-1|-1|"+toAppend+"|-1|-1";
+            String message = "-1|-1|-1|"+toAppend+"|-1|-1|-1";
             btChannel.sendMessage(message);
         });
 
@@ -145,19 +147,19 @@ public class MainActivity extends AppCompatActivity {
             }else{
                 toAppend = "1";
             }
-            String message = "-1|-1|-1|-1|"+toAppend+"|"+speedToAppend;
+            String message = "-1|-1|-1|-1|"+toAppend+"|"+speedToAppend+"|-1";
             btChannel.sendMessage(message);
         });
 
         findViewById(R.id.btn_irrigationPlus).setOnClickListener(l -> {
             String speedToAppend = String.valueOf(Integer.parseInt(irrigationSpeed)-10);
-            String message = "-1|-1|-1|-1|-1|"+speedToAppend;
+            String message = "-1|-1|-1|-1|-1|"+speedToAppend+"|-1";
             btChannel.sendMessage(message);
         });
 
         findViewById(R.id.btn_irrigationMinus).setOnClickListener(l -> {
             String speedToAppend = String.valueOf(Integer.parseInt(irrigationSpeed)+10);
-            String message = "-1|-1|-1|-1|-1|"+speedToAppend;
+            String message = "-1|-1|-1|-1|-1|"+speedToAppend+"|-1";
             btChannel.sendMessage(message);
         });
     }
@@ -203,12 +205,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onMessageReceived(String receivedMessage) {
                         TextView chatLabel = (TextView) findViewById(R.id.chatLabel);
-                        /*chatLabel.setText(String.format(
+                        chatLabel.setText(String.format(
                                 "> [RECEIVED from %s] %s\n",
                                 btChannel.getRemoteDeviceName(),
                                 receivedMessage
-                        )+ chatLabel.getText());*/
+                        )+ chatLabel.getText());
                         String[] splitted = receivedMessage.split("\\|");
+                        Log.d("ZIO", Arrays.toString(splitted));
                         led1 = splitted[0];
                         led2 = splitted[1];
                         led3 = splitted[2];
@@ -227,6 +230,9 @@ public class MainActivity extends AppCompatActivity {
                         ));
                     }
                 });
+
+                String message = "-1|-1|-1|-1|-1|-1|MAN";
+                btChannel.sendMessage(message);
             }
 
             @Override

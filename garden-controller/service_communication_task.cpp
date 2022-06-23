@@ -64,22 +64,22 @@ void ServiceCommunicationTask::readMsg(){
     String openIrrigationStr = splitString(receivedMsg, '|', 4);
     String irrigationSpeedStr = splitString(receivedMsg, '|', 5);
 
-    if(dL1 != "-1"){
+    if(!dL1.equals("-1")){
       switchDL1 = dL1.toInt();
     }
-    if(dL2 != "-1"){
+    if(!dL2.equals("-1")){
       switchDL2 = dL2.toInt();
     }
-    if(aL1 != "-1"){
+    if(!aL1.equals("-1")){
       valueAL1 = aL1.toInt();
     }
-    if(aL2 != "-1"){
+    if(!aL2.equals("-1")){
       valueAL2 = aL2.toInt();
     }
-    if(openIrrigationStr != "-1"){
+    if(!openIrrigationStr.equals("-1")){
       openIrrigation = openIrrigationStr.toInt();
     }
-    if(irrigationSpeedStr != "-1"){
+    if(!irrigationSpeedStr.equals("-1")){
       irrigationSpeed = irrigationSpeedStr.toInt();
     }
   }
@@ -90,6 +90,7 @@ void ServiceCommunicationTask::readMsg(){
 void serialEvent(){
   while(Serial.available()){
     char ch = (char) Serial.read();
+    //lcd.print(ch);
     if (ch == '\n'){
       msgAvailable = true;      
     } else {
