@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.garden_app.utils.C;
 
+import org.w3c.dom.Text;
+
 import java.util.UUID;
 
 import btlib.BluetoothChannel;
@@ -26,12 +28,27 @@ import btlib.exceptions.BluetoothDeviceNotFound;
 public class MainActivity extends AppCompatActivity {
     private BluetoothChannel btChannel;
 
+    TextView txtLed3;
+    TextView txtLed4;
+    TextView txtIrrigationSpeed;
+
+    private String led1 = "0";
+    private String led2 = "0";
+    private String led3 = "0";
+    private String led4 = "0";
+    private String openIrrigation = "0";
+    private String irrigationSpeed = "0";
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        txtLed3 = findViewById(R.id.led3_value);
+        txtLed4 = findViewById(R.id.led4_value);
+        txtIrrigationSpeed = findViewById(R.id.irrigation_speed);
 
         if(btAdapter != null && !btAdapter.isEnabled()) {
             startActivityForResult(
@@ -58,7 +75,89 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.btn_led1).setOnClickListener(l -> {
-            String message = "1|-1|-1|-1|-1|-1";
+            String toAppend;
+            if(led1.equals("1")){
+                toAppend = "0";
+            }else{
+                toAppend = "1";
+            }
+            String message = toAppend+"|-1|-1|-1|-1|-1";
+            btChannel.sendMessage(message);
+        });
+
+        findViewById(R.id.btn_led2).setOnClickListener(l -> {
+            String toAppend;
+            if(led2.equals("1")){
+                toAppend = "0";
+            }else{
+                toAppend = "1";
+            }
+            String message = "-1|"+toAppend+"|-1|-1|-1|-1";
+            btChannel.sendMessage(message);
+        });
+
+        findViewById(R.id.btn_led3Plus).setOnClickListener(l -> {
+            String toAppend = "-1";
+            if(Integer.parseInt(led3) < 5){
+                toAppend = String.valueOf(Integer.parseInt(led3)+1);
+            }
+            String message = "-1|-1|"+toAppend+"|-1|-1|-1";
+            btChannel.sendMessage(message);
+        });
+
+        findViewById(R.id.btn_led3Minus).setOnClickListener(l -> {
+            String toAppend = "-1";
+            if(Integer.parseInt(led3) > 0){
+                toAppend = String.valueOf(Integer.parseInt(led3)-1);
+            }
+            String message = "-1|-1|"+toAppend+"|-1|-1|-1";
+            btChannel.sendMessage(message);
+        });
+
+        findViewById(R.id.btn_led4Plus).setOnClickListener(l -> {
+            String toAppend = "-1";
+            if(Integer.parseInt(led4) < 5){
+                toAppend = String.valueOf(Integer.parseInt(led4)+1);
+            }
+            String message = "-1|-1|-1|"+toAppend+"|-1|-1";
+            btChannel.sendMessage(message);
+        });
+
+        findViewById(R.id.btn_led4Minus).setOnClickListener(l -> {
+            String toAppend = "-1";
+            if(Integer.parseInt(led4) > 0){
+                toAppend = String.valueOf(Integer.parseInt(led4)-1);
+            }
+            String message = "-1|-1|-1|"+toAppend+"|-1|-1";
+            btChannel.sendMessage(message);
+        });
+
+        findViewById(R.id.irrigation_btn).setOnClickListener(l -> {
+            String toAppend;
+            String speedToAppend;
+            if(irrigationSpeed.equals("0")){
+                speedToAppend = "50";
+            }else{
+                speedToAppend = irrigationSpeed;
+            }
+            if(openIrrigation.equals("1")){
+                toAppend = "0";
+            }else{
+                toAppend = "1";
+            }
+            String message = "-1|-1|-1|-1|"+toAppend+"|"+speedToAppend;
+            btChannel.sendMessage(message);
+        });
+
+        findViewById(R.id.btn_irrigationPlus).setOnClickListener(l -> {
+            String speedToAppend = String.valueOf(Integer.parseInt(irrigationSpeed)-10);
+            String message = "-1|-1|-1|-1|-1|"+speedToAppend;
+            btChannel.sendMessage(message);
+        });
+
+        findViewById(R.id.btn_irrigationMinus).setOnClickListener(l -> {
+            String speedToAppend = String.valueOf(Integer.parseInt(irrigationSpeed)+10);
+            String message = "-1|-1|-1|-1|-1|"+speedToAppend;
             btChannel.sendMessage(message);
         });
     }
@@ -103,11 +202,20 @@ public class MainActivity extends AppCompatActivity {
                 btChannel.registerListener(new RealBluetoothChannel.Listener() {
                     @Override
                     public void onMessageReceived(String receivedMessage) {
-                        ((TextView) findViewById(R.id.chatLabel)).append(String.format(
+                        TextView chatLabel = (TextView) findViewById(R.id.chatLabel);
+                        /*chatLabel.setText(String.format(
                                 "> [RECEIVED from %s] %s\n",
                                 btChannel.getRemoteDeviceName(),
                                 receivedMessage
-                        ));
+                        )+ chatLabel.getText());*/
+                        String[] splitted = receivedMessage.split("\\|");
+                        led1 = splitted[0];
+                        led2 = splitted[1];
+                        led3 = splitted[2];
+                        led4 = splitted[3];
+                        openIrrigation = splitted[4];
+                        irrigationSpeed = splitted[5].replaceAll("\\r","");
+                        updateUI();
                     }
 
                     @Override
@@ -129,5 +237,11 @@ public class MainActivity extends AppCompatActivity {
                 ));
             }
         }).execute();
+    }
+
+    private void updateUI(){
+        txtLed3.setText(led3);
+        txtLed4.setText(led4);
+        txtIrrigationSpeed.setText(irrigationSpeed);
     }
 }

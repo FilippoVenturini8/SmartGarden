@@ -19,6 +19,7 @@ public:
  void init(int period); 
  void tick();
  void checkMsg();
+ String composeMsg();
  
 };
 

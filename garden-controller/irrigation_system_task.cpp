@@ -26,7 +26,7 @@ void IrrigationSystemTask::tick(){
       }
       break;
     case OPEN:
-      if(openIrrigation == 0){
+      if(openIrrigation == 0 or irrigationSpeed == 0){
         this->servo->off();
         state = CLOSED;
       }
