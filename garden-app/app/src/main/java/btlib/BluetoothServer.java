@@ -7,9 +7,6 @@ import android.bluetooth.BluetoothSocket;
 import java.io.IOException;
 import java.util.UUID;
 
-import unibo.btlib.CommChannel;
-import unibo.btlib.RealBluetoothChannel;
-
 public class BluetoothServer extends Thread {
     private volatile boolean stop = false;
     private BluetoothServerSocket btServerSocket;

@@ -6,8 +6,6 @@ import android.bluetooth.BluetoothSocket;
 import java.io.IOException;
 import java.util.UUID;
 
-import unibo.btlib.RealBluetoothChannel;
-
 public final class ConnectToBluetoothServerTask extends ConnectionTask {
 
     private BluetoothSocket btSocket = null;

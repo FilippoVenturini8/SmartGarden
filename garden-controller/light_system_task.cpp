@@ -4,7 +4,7 @@
 #include "shared_variables.h"
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
-//LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4); 
+LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4); 
 
 LightSystemTask::LightSystemTask(int pinDL1, int pinDL2, int pinAL1, int pinAL2){
   this->state = IDLE_STATE;
@@ -18,9 +18,13 @@ LightSystemTask::LightSystemTask(int pinDL1, int pinDL2, int pinAL1, int pinAL2)
   this->lastDL2 = 0;
   this->lastAL1 = 0;
   this->lastAL2 = 0;
+
+  Serial.begin(9600);
+
+  Serial.println("DIO");
   
-  //lcd.init();
-  //lcd.backlight();
+  lcd.init();
+  lcd.backlight();
 }
  
 void LightSystemTask::init(int period){
@@ -32,7 +36,7 @@ void LightSystemTask::init(int period){
 }
  
 void LightSystemTask::tick(){
-  //lcd.print(state);
+  lcd.print(switchDL1);
   switch(state){
     case IDLE_STATE:
       if(switchDL1 != lastDL1){

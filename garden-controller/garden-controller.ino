@@ -1,7 +1,8 @@
 #include "shared_variables.h"
 #include "scheduler.h"
 #include "task.h"
-#include "serial_communication_task.h"
+#include "service_communication_task.h"
+#include "app_communication_task.h"
 #include "light_system_task.h"
 #include "irrigation_system_task.h"
 
@@ -24,15 +25,19 @@ void setup() {
 
   sched.init(50);
 
-  Task* serialCommunicationTask = new SerialCommunicationTask();
-  serialCommunicationTask->init(100);
-  sched.addTask(serialCommunicationTask);
+  Task* serviceCommunicationTask = new ServiceCommunicationTask();
+  serviceCommunicationTask->init(100);
+  sched.addTask(serviceCommunicationTask);
+
+  Task* appCommunicationTask = new AppCommunicationTask();
+  appCommunicationTask->init(100);
+  sched.addTask(appCommunicationTask);
 
   Task* lightSystemTask = new LightSystemTask(8,7,6,5);
   lightSystemTask->init(50);
   sched.addTask(lightSystemTask);
 
-  Task* irrigationSystemTask = new IrrigationSystemTask(3);
+  Task* irrigationSystemTask = new IrrigationSystemTask(9);
   irrigationSystemTask->init(50);
   sched.addTask(irrigationSystemTask);
   

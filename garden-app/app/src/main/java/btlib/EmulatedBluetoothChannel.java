@@ -10,8 +10,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Arrays;
 
-import unibo.btlib.ExtendedRunnable;
-import unibo.btlib.utils.C;
+import btlib.utils.C;
 
 public final class EmulatedBluetoothChannel extends BluetoothChannel {
 

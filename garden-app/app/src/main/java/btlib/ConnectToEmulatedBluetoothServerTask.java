@@ -3,9 +3,7 @@ package btlib;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-
-import unibo.btlib.EmulatedBluetoothChannel;
-import unibo.btlib.utils.C;
+import btlib.utils.C;
 
 public final class ConnectToEmulatedBluetoothServerTask extends ConnectionTask {
     private Socket socket;

@@ -57,10 +57,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.sendBtn).setOnClickListener(l -> {
-            String message = ((EditText)findViewById(R.id.editText)).getText().toString();
+        findViewById(R.id.btn_led1).setOnClickListener(l -> {
+            String message = "1|-1|-1|-1|-1|-1";
             btChannel.sendMessage(message);
-            ((EditText)findViewById(R.id.editText)).setText("");
         });
     }
 

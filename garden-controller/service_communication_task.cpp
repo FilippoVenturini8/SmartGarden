@@ -1,25 +1,25 @@
-#include "serial_communication_task.h"
+#include "service_communication_task.h"
 #include "shared_variables.h"
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
 
 bool msgAvailable;
 String receivedMsg;
-LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4); 
+//LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4); 
 
-SerialCommunicationTask::SerialCommunicationTask(){
+ServiceCommunicationTask::ServiceCommunicationTask(){
   state = WAITING;
   msgAvailable = false;
   receivedMsg = "";
-  lcd.init();
-  lcd.backlight();
+  //lcd.init();
+  //lcd.backlight();
 }
  
-void SerialCommunicationTask::init(int period){
+void ServiceCommunicationTask::init(int period){
   Task::init(period);
 }
  
-void SerialCommunicationTask::tick(){
+void ServiceCommunicationTask::tick(){
   switch(state){    
     case WAITING: 
       if(msgAvailable){
@@ -53,10 +53,10 @@ String splitString(String str, char sep, int index)
  return found > index ? str.substring(strIdx[0], strIdx[1]) : "";
 }
 
-void SerialCommunicationTask::readMsg(){
+void ServiceCommunicationTask::readMsg(){
   if(receivedMsg != ""){
-    lcd.clear();
-    lcd.print(receivedMsg);
+    //lcd.clear();
+    //lcd.print(receivedMsg);
     String dL1 = splitString(receivedMsg, '|', 0);
     String dL2 = splitString(receivedMsg, '|', 1);
     String aL1 = splitString(receivedMsg, '|', 2);

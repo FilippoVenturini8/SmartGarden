@@ -7,7 +7,7 @@ import android.os.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-import unibo.btlib.utils.C;
+import btlib.utils.C;
 
 public abstract class BluetoothChannel implements CommChannel {
     private final List<Listener> listeners = new ArrayList<>();
