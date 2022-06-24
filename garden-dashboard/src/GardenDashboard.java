@@ -1,3 +1,5 @@
+import java.awt.Font;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,14 +29,19 @@ public class GardenDashboard {
 		
 		panel.setLayout(null);
 		
+		JLabel lblTitle = new JLabel("Garden Dashboard");
 		JLabel lblModality = new JLabel("Modality: ");
 		JLabel lblLux = new JLabel("Luminosity: ");
 		JLabel lblTmp = new JLabel("Temperature: ");
 		
-		lblModality.setBounds(320, 25, 300, 50);
-		lblLux.setBounds(320, 50, 200, 50);
-		lblTmp.setBounds(320, 100, 200, 50);
+		lblTitle.setFont(new Font("Serif", Font.BOLD, 30));
 		
+		lblTitle.setBounds(240, 25, 300, 50);
+		lblModality.setBounds(290, 100, 300, 50);
+		lblLux.setBounds(290, 150, 200, 50);
+		lblTmp.setBounds(290, 200, 200, 50);
+		
+		panel.add(lblTitle);
 		panel.add(lblModality);
 		panel.add(lblLux);
 		panel.add(lblTmp);

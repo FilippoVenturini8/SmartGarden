@@ -239,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                             openIrrigation = splitted[4];
                             irrigationSpeed = splitted[5];
                             modality = splitted[6].replaceAll("\\r","");
+
                             updateUI();
                         }
 
@@ -307,6 +308,10 @@ public class MainActivity extends AppCompatActivity {
         txtLed4.setText(led4);
         TextView mod = findViewById(R.id.modality_txtView);
         mod.setText(modality);
+
+        if(modality.equals("ARM")){
+            findViewById(R.id.img_notifications).setBackgroundResource(R.drawable.ic_baseline_notifications_24_error);
+        }
 
         if(irrigationSpeed.equals("50")){
             txtIrrigationSpeed.setText("1");

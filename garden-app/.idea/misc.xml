@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Progetti/SmartGarden/garden-app/app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.23055555555555557" />
+        <entry key="..\:/Progetti/SmartGarden/garden-app/app/src/main/res/drawable/ic_baseline_notifications_24_error.xml" value="0.14322916666666666" />
         <entry key="..\:/Progetti/SmartGarden/garden-app/app/src/main/res/layout/activity_main.xml" value="0.264" />
       </map>
     </option>
