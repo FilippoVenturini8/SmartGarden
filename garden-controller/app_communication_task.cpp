@@ -4,29 +4,41 @@
 #include "StringSplitter.h"
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4); 
+//LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4); 
 
 MsgServiceBT msgService(2,3);
 
 AppCommunicationTask::AppCommunicationTask(){
   this->state = RECEIVING;
-  msgService.init();
-  lcd.init();
-  lcd.backlight();
+  this->tryReceiving = false;
+  this->lastUpdateTime = millis();
+  //lcd.init();
+  //lcd.backlight();
 }
  
 void AppCommunicationTask::init(int period){
   Task::init(period);
+  msgService.init();
+  //Serial.begin(9600);
+  //while (!Serial){}
 }
 
 String AppCommunicationTask::composeMsg(){
-  return String(switchDL1)+"|"+String(switchDL2)+"|"+String(valueAL1)+"|"+String(valueAL2)+"|"+String(openIrrigation)+"|"+String(irrigationSpeed);
+  return String(switchDL1)+"|"+String(switchDL2)+"|"+String(valueAL1)+"|"+String(valueAL2)+"|"+String(openIrrigation)+"|"+String(irrigationSpeed)+"|"+String(modality);
 }
 
 void AppCommunicationTask::tick(){
   switch(state){
+    case IDLE_STATE:
+      if(tryReceiving){
+        state = RECEIVING;
+        tryReceiving = false;
+      }else{
+        state = SENDING;
+        tryReceiving = true;
+      }
+      break;
     case RECEIVING:
-      msgService.sendMsg(composeMsg());
       if (msgService.isMsgAvailable()) {
         //lcd.clear();
         Msg* msg = msgService.receiveMsg();
@@ -41,7 +53,7 @@ void AppCommunicationTask::tick(){
         String irrigationSpeedStr = splitter->getItemAtIndex(5);
         String modalityStr = splitter->getItemAtIndex(6);
 
-        lcd.print(modalityStr);
+        //lcd.print(modalityStr);
          
         if(!dL1.equals("-1")){
           switchDL1 = dL1.toInt();
@@ -64,7 +76,16 @@ void AppCommunicationTask::tick(){
         if(!modalityStr.equals("-1")){
           modality = modalityStr;
         }
+        delete msg;
      }
+     state = IDLE_STATE;
      break;
+   case SENDING:
+      if(millis() - lastUpdateTime >= UPDATE_TIME){
+        msgService.sendMsg(Msg(composeMsg()));
+        state = IDLE_STATE;
+        lastUpdateTime = millis();
+      }
+      break;
   }
 }

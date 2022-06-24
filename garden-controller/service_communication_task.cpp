@@ -5,15 +5,16 @@
 
 bool msgAvailable;
 String receivedMsg;
-//LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4); 
+LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4); 
 
 ServiceCommunicationTask::ServiceCommunicationTask(){
   state = WAITING;
   msgAvailable = false;
   receivedMsg = "";
-  lastModality = "";
-  //lcd.init();
-  //lcd.backlight();
+  lastModality = modality;
+  wasIrrigationSleeping = isIrrigationSleeping;
+  lcd.init();
+  lcd.backlight();
 }
  
 void ServiceCommunicationTask::init(int period){
@@ -23,8 +24,9 @@ void ServiceCommunicationTask::init(int period){
 void ServiceCommunicationTask::tick(){
   switch(state){    
     case WAITING:
-      if(!lastModality.equals(modality)){
+      if(!lastModality.equals(modality) or wasIrrigationSleeping != isIrrigationSleeping){
         lastModality = modality;
+        wasIrrigationSleeping = isIrrigationSleeping;
         state = SEND;
       }else if(msgAvailable){
         state = RECEIVE;
@@ -37,7 +39,8 @@ void ServiceCommunicationTask::tick(){
       break;
 
     case SEND:
-      Serial.println(modality);
+      lcd.print(modality+"|"+isIrrigationSleeping);
+      Serial.println(modality+"|"+isIrrigationSleeping);
       state = WAITING;
       break;
   }
@@ -72,6 +75,7 @@ void ServiceCommunicationTask::readMsg(){
     String aL2 = splitString(receivedMsg, '|', 3);
     String openIrrigationStr = splitString(receivedMsg, '|', 4);
     String irrigationSpeedStr = splitString(receivedMsg, '|', 5);
+    String modalityStr = splitString(receivedMsg, '|', 6);
 
     if(!dL1.equals("-1")){
       switchDL1 = dL1.toInt();
@@ -90,6 +94,9 @@ void ServiceCommunicationTask::readMsg(){
     }
     if(!irrigationSpeedStr.equals("-1")){
       irrigationSpeed = irrigationSpeedStr.toInt();
+    }
+    if(!modalityStr.equals("-1")){
+      modality = modalityStr;
     }
   }
   msgAvailable = false;

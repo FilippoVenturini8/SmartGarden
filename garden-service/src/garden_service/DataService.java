@@ -26,8 +26,12 @@ public class DataService extends AbstractVerticle {
 	private LinkedList<DataPoint> values;
 	private boolean activateLightSystem = false;
 	private int analogicLightValue = 0;
+	private boolean toggleIrrigationSystem = false;
+	private int irrigationSpeed = 0;
 	private int lastLux = 0;
+	private int lastTemp = 0;
 	private String modality = "AUT";
+	private boolean isTemperatureInAlarm = false;
 	
 	public DataService(int port) {
 		values = new LinkedList<>();		
@@ -55,17 +59,17 @@ public class DataService extends AbstractVerticle {
 		if (res == null) {
 			sendError(400, response);
 		} else {
-			float temperature = res.getFloat("temperature");
+			int temperature = res.getInteger("temperature");
 			int lux = res.getInteger("lux");
 			
-			values.addFirst(new DataPoint(temperature, lux, modality));
+			values.addFirst(new DataPoint(5, lux, modality));
 			if (values.size() > MAX_SIZE) {
 				values.removeLast();
 			}
 			
 			checkData();
 			
-			log("New Temp: " + temperature + " Lux " + lux);
+			//log("New Temp: " + temperature + " Lux " + lux);
 			response.setStatusCode(200).end();
 		}
 	}
@@ -81,6 +85,31 @@ public class DataService extends AbstractVerticle {
 		}else if(lux >= 5 && activateLightSystem) {
 			activateLightSystem = false;
 		}
+		
+		int temp = lastMeasurement.getTemperature();
+		this.isTemperatureInAlarm = false;
+		if(temp != lastTemp) {
+			switch(temp) {
+				case 1:
+					irrigationSpeed = 0;
+					break;
+				case 2:
+					irrigationSpeed = 50;
+					break;
+				case 3:
+					irrigationSpeed = 40;
+					break;
+				case 4:
+					irrigationSpeed = 30;
+					break;
+				case 5:
+					irrigationSpeed = 20;
+					this.isTemperatureInAlarm = true;
+					break;
+			}
+			toggleIrrigationSystem = true;
+		}
+		
 	}
 	
 	private void handleGetData(RoutingContext routingContext) {
@@ -114,6 +143,22 @@ public class DataService extends AbstractVerticle {
 	
 	public void setModality(String modality) {
 		this.modality = modality;
+	}
+	
+	public boolean toggleIrrigationSystem() {
+		return this.toggleIrrigationSystem;
+	}
+	
+	public boolean getIsTemperatureInAlarm() {
+		return this.isTemperatureInAlarm;
+	}
+	
+	public void setToggleIrrigationSystem(boolean value) {
+		this.toggleIrrigationSystem = value;
+	}
+	
+	public int getIrrigationSpeed() {
+		return this.irrigationSpeed;
 	}
 
 }

@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import btlib.BluetoothChannel;
 import btlib.BluetoothUtils;
+import btlib.CommChannel;
 import btlib.ConnectToBluetoothServerTask;
 import btlib.ConnectionTask;
 import btlib.RealBluetoothChannel;
@@ -35,12 +36,12 @@ public class MainActivity extends AppCompatActivity {
     TextView txtIrrigationSpeed;
     Button connectBtn;
 
-    private String led1;
-    private String led2;
-    private String led3;
-    private String led4;
-    private String openIrrigation;
-    private String irrigationSpeed;
+    private String led1 = "0";
+    private String led2 = "0";
+    private String led3 = "0";
+    private String led4 = "0";
+    private String openIrrigation = "0";
+    private String irrigationSpeed = "0";
     private String modality;
 
     private boolean openedConnection = false;
@@ -153,18 +154,33 @@ public class MainActivity extends AppCompatActivity {
                 toAppend = "1";
             }
             String message = "-1|-1|-1|-1|"+toAppend+"|"+speedToAppend+"|-1";
+            //String message = ("PROVA");
             btChannel.sendMessage(message);
         });
 
         findViewById(R.id.btn_irrigationPlus).setOnClickListener(l -> {
-            String speedToAppend = String.valueOf(Integer.parseInt(irrigationSpeed)-10);
+            String speedToAppend = "-1";
+            if(Integer.parseInt(irrigationSpeed) >= 10){
+                speedToAppend = String.valueOf(Integer.parseInt(irrigationSpeed)-10);
+            }
+            if(Integer.parseInt(irrigationSpeed) == 0){
+                speedToAppend = "50";
+            }
             String message = "-1|-1|-1|-1|-1|"+speedToAppend+"|-1";
             btChannel.sendMessage(message);
         });
 
         findViewById(R.id.btn_irrigationMinus).setOnClickListener(l -> {
-            String speedToAppend = String.valueOf(Integer.parseInt(irrigationSpeed)+10);
+            String speedToAppend = "-1";
+            if(Integer.parseInt(irrigationSpeed) <= 40){
+                speedToAppend = String.valueOf(Integer.parseInt(irrigationSpeed)+10);
+            }
             String message = "-1|-1|-1|-1|-1|"+speedToAppend+"|-1";
+            btChannel.sendMessage(message);
+        });
+
+        findViewById(R.id.btn_alarm).setOnClickListener(l -> {
+            String message = "-1|-1|-1|-1|-1|-1|"+modality;
             btChannel.sendMessage(message);
         });
     }
@@ -221,7 +237,8 @@ public class MainActivity extends AppCompatActivity {
                             led3 = splitted[2];
                             led4 = splitted[3];
                             openIrrigation = splitted[4];
-                            irrigationSpeed = splitted[5].replaceAll("\\r","");
+                            irrigationSpeed = splitted[5];
+                            modality = splitted[6].replaceAll("\\r","");
                             updateUI();
                         }
 
@@ -233,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
                                     sentMessage
                             ));
 
-                            Log.d("ORCO",sentMessage);
+                            Log.d("SEND",sentMessage);
                         }
                     });
 
@@ -288,6 +305,19 @@ public class MainActivity extends AppCompatActivity {
     private void updateUI(){
         txtLed3.setText(led3);
         txtLed4.setText(led4);
-        txtIrrigationSpeed.setText(irrigationSpeed);
+        TextView mod = findViewById(R.id.modality_txtView);
+        mod.setText(modality);
+
+        if(irrigationSpeed.equals("50")){
+            txtIrrigationSpeed.setText("1");
+        }else if(irrigationSpeed.equals("40")){
+            txtIrrigationSpeed.setText("2");
+        }else if(irrigationSpeed.equals("30")){
+            txtIrrigationSpeed.setText("3");
+        }else if(irrigationSpeed.equals("20")){
+            txtIrrigationSpeed.setText("4");
+        }else if(irrigationSpeed.equals("0")){
+            txtIrrigationSpeed.setText("0");
+        }
     }
 }

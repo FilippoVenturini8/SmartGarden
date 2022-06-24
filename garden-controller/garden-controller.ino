@@ -14,6 +14,7 @@ int valueAL1 = 0;
 int valueAL2 = 0;
 int openIrrigation = 0;
 int irrigationSpeed = 0;
+int isIrrigationSleeping = 0;
 String modality = "AUT";
 
 void setup() {

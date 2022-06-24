@@ -14,6 +14,7 @@ public:
  void tick();
  void readMsg();
  String lastModality;
+ int wasIrrigationSleeping;
  
 };
 

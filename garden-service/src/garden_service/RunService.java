@@ -19,14 +19,26 @@ public class RunService {
 		Thread.sleep(4000);
 		System.out.println("Ready.");
 		
+		String[] splittedMsg;
+		String mod;
+		String isIrrigationSleeping = "0";
+		
 		while(true) {
 			if(channel.isMsgAvailable()) {
 				String msg = channel.receiveMsg();
+				splittedMsg = msg.split("\\|");
 				System.out.println(msg);
-				if(!msg.equals(modality) && msg.equals("MAN")) {
+				if(!msg.contains("|") || splittedMsg.length != 2) {
+					break;
+				}
+				
+				mod = splittedMsg[0];
+				isIrrigationSleeping = splittedMsg[1];
+				
+				if(!mod.equals(modality) && mod.equals("MAN")) {
 					modality = "MAN";
 					service.setModality(modality);
-				}else if(!msg.equals(modality) && msg.equals("AUT")) {
+				}else if(!mod.equals(modality) && mod.equals("AUT")) {
 					modality = "AUT";
 					service.setModality(modality);
 				}
@@ -35,12 +47,27 @@ public class RunService {
 			if(modality.equals("AUT")) {
 				if(!isLightSystemOn && service.activateLightSystem()) {
 					int value = service.getAnalogicLightValue();
-					channel.sendMsg("1|1|"+value+"|"+value+"|1|50");
+					channel.sendMsg("1|1|"+value+"|"+value+"|-1|-1|-1");
 					isLightSystemOn = true;
 				}else if(isLightSystemOn && !service.activateLightSystem()) {
-					channel.sendMsg("0|0|0|0|1|30");
+					channel.sendMsg("0|0|0|0|-1|-1|-1");
 					isLightSystemOn = false;
 				}
+				if(service.toggleIrrigationSystem()) {
+					int irrigationSpeed = service.getIrrigationSpeed();
+					if(irrigationSpeed == 0) {
+						channel.sendMsg("-1|-1|-1|-1|0|0|-1");
+					}else {
+						channel.sendMsg("-1|-1|-1|-1|1|"+irrigationSpeed+"|-1");
+					}
+					service.setToggleIrrigationSystem(false);
+				}
+			}
+			
+			if(service.getIsTemperatureInAlarm() && isIrrigationSleeping.equals("1")) {
+				modality = "ARM";
+				service.setModality("ARM");
+				channel.sendMsg("-1|-1|-1|-1|1|-1|"+modality);
 			}
 			
 			

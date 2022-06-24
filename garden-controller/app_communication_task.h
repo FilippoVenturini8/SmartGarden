@@ -7,11 +7,15 @@
 
 class AppCommunicationTask: public Task {
 
- enum { RECEIVING } state;
+ const int UPDATE_TIME = 1000;
+
+ enum { IDLE_STATE, RECEIVING, SENDING } state;
  int RXD = 2;
  int TXD = 3;
  bool isMsgAvailable;
  String msg;
+ bool tryReceiving;
+ unsigned long lastUpdateTime;
  
 public:
 

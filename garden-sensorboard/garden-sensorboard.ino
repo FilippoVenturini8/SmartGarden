@@ -54,14 +54,12 @@ int sendData(String address, float temperature, int lux){
 }
 
 void loop() {
-  /*led->switchOn();
-  delay(1000);
-  led->switchOff();
-  delay(1000);*/
-  //delay(100);
   if (WiFi.status()== WL_CONNECTED){      
     int lux = photoresistor->getLux();
-    int code = sendData(serviceURI, 17.0, lux);
+    //float temp = tempSensor->getTemperature();
+    float temp = 20.0;
+    int mappedTemp = map(temp, 17.0, 25.0, 1, 5);
+    int code = sendData(serviceURI, mappedTemp, lux);
     if (code == 200){
        Serial.println("ok");   
     } else {

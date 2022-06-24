@@ -8,6 +8,7 @@ IrrigationSystemTask::IrrigationSystemTask(int pinServo){
   this->pinServo = pinServo;
   this->totServoStep = 0;
   this->delta = 1;
+  this->lastSleep = millis();
 }
  
 void IrrigationSystemTask::init(int period){
@@ -17,7 +18,21 @@ void IrrigationSystemTask::init(int period){
  
 void IrrigationSystemTask::tick(){
   switch(state){
+    case SLEEP_STATE: 
+      if(millis() - startSleep >= SLEEP_TIME){
+        lastSleep = millis();
+        state = lastState;
+        isIrrigationSleeping = 0;
+      }
+      break;
     case CLOSED:
+      if(millis()-lastSleep >= WORK_TIME){
+        lastState = state;
+        state = SLEEP_STATE;
+        startSleep = millis();
+        isIrrigationSleeping = 1;
+        break;
+      }
       if(openIrrigation == 1){
         currentServoStep = 0;
         this->totServoStep = irrigationSpeed;
@@ -26,6 +41,13 @@ void IrrigationSystemTask::tick(){
       }
       break;
     case OPEN:
+      if(millis()-lastSleep >= WORK_TIME){
+        lastState = state;
+        state = SLEEP_STATE;
+        startSleep = millis();
+        isIrrigationSleeping = 1;
+        break;
+      }
       if(openIrrigation == 0 or irrigationSpeed == 0){
         this->servo->off();
         state = CLOSED;
@@ -42,5 +64,6 @@ void IrrigationSystemTask::tick(){
       long angle = map (currentServoStep, 0, totServoStep, 0, 180);
       servo->setPosition(angle);
       break;
+    
   }
 }

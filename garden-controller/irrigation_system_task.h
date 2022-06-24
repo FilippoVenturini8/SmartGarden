@@ -6,12 +6,17 @@
 
 class IrrigationSystemTask: public Task {
 
- enum { CLOSED, OPEN} state;
+ const int WORK_TIME = 10000;
+ const int SLEEP_TIME = 20000;
+ enum { CLOSED, OPEN, SLEEP_STATE} state;
  int pinServo;
  ServoMotor* servo;
  int totServoStep;
  int currentServoStep;
  int delta;
+ unsigned long lastSleep;
+ unsigned long startSleep;
+ int lastState;
  
 public:
 
