@@ -14,7 +14,7 @@ int valueAL1 = 0;
 int valueAL2 = 0;
 int openIrrigation = 0;
 int irrigationSpeed = 0;
-String modality = "AUTO";
+String modality = "AUT";
 
 void setup() {
   /*digitalLed1 = new DigitalLedImpl(8);

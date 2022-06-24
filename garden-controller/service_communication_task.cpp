@@ -11,6 +11,7 @@ ServiceCommunicationTask::ServiceCommunicationTask(){
   state = WAITING;
   msgAvailable = false;
   receivedMsg = "";
+  lastModality = "";
   //lcd.init();
   //lcd.backlight();
 }
@@ -21,14 +22,22 @@ void ServiceCommunicationTask::init(int period){
  
 void ServiceCommunicationTask::tick(){
   switch(state){    
-    case WAITING: 
-      if(msgAvailable){
+    case WAITING:
+      if(!lastModality.equals(modality)){
+        lastModality = modality;
+        state = SEND;
+      }else if(msgAvailable){
         state = RECEIVE;
       }
       break;
       
     case RECEIVE:
       readMsg();
+      state = WAITING;
+      break;
+
+    case SEND:
+      Serial.println(modality);
       state = WAITING;
       break;
   }
@@ -90,7 +99,6 @@ void ServiceCommunicationTask::readMsg(){
 void serialEvent(){
   while(Serial.available()){
     char ch = (char) Serial.read();
-    //lcd.print(ch);
     if (ch == '\n'){
       msgAvailable = true;      
     } else {

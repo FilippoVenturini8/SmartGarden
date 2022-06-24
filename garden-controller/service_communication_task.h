@@ -5,7 +5,7 @@
 
 class ServiceCommunicationTask: public Task {
 
- enum {WAITING, RECEIVE} state;
+ enum {WAITING, RECEIVE, SEND} state;
   
 public:
 
@@ -13,6 +13,7 @@ public:
  void init(int period); 
  void tick();
  void readMsg();
+ String lastModality;
  
 };
 

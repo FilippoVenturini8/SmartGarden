@@ -27,6 +27,7 @@ public class DataService extends AbstractVerticle {
 	private boolean activateLightSystem = false;
 	private int analogicLightValue = 0;
 	private int lastLux = 0;
+	private String modality = "AUT";
 	
 	public DataService(int port) {
 		values = new LinkedList<>();		
@@ -57,7 +58,7 @@ public class DataService extends AbstractVerticle {
 			float temperature = res.getFloat("temperature");
 			int lux = res.getInteger("lux");
 			
-			values.addFirst(new DataPoint(temperature, lux, "AUTO"));
+			values.addFirst(new DataPoint(temperature, lux, modality));
 			if (values.size() > MAX_SIZE) {
 				values.removeLast();
 			}
@@ -109,6 +110,10 @@ public class DataService extends AbstractVerticle {
 
 	public int getAnalogicLightValue() {
 		return analogicLightValue;
+	}
+	
+	public void setModality(String modality) {
+		this.modality = modality;
 	}
 
 }

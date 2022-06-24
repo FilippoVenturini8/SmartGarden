@@ -10,6 +10,7 @@ void MsgServiceBT::init(){
   content.reserve(256);
   channel->begin(9600);
   availableMsg = NULL;
+  Serial.println(9600);
 }
 
 bool MsgServiceBT::sendMsg(Msg msg){

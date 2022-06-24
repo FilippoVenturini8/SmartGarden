@@ -63,19 +63,22 @@
                 android:layout_height="wrap_content"
                 android:text="ON/OFF"
                 android:id="@+id/btn_led1"
-                android:layout_marginStart="50dp"/>
+                android:layout_marginStart="50dp"
+                android:enabled="false"/>
             <Button
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:text="+"
                 android:id="@+id/btn_led3Plus"
-                android:layout_marginStart="50dp"/>
+                android:layout_marginStart="50dp"
+                android:enabled="false"/>
             <Button
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:text="+"
                 android:id="@+id/btn_led4Plus"
-                android:layout_marginStart="50dp"/>
+                android:layout_marginStart="50dp"
+                android:enabled="false"/>
         </LinearLayout>
 
         <LinearLayout
@@ -116,19 +119,22 @@
                 android:layout_height="wrap_content"
                 android:text="ON/OFF"
                 android:id="@+id/btn_led2"
-                android:layout_marginStart="50dp"/>
+                android:layout_marginStart="50dp"
+                android:enabled="false"/>
             <Button
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:text="-"
                 android:id="@+id/btn_led3Minus"
-                android:layout_marginStart="50dp"/>
+                android:layout_marginStart="50dp"
+                android:enabled="false"/>
             <Button
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:text="-"
                 android:id="@+id/btn_led4Minus"
-                android:layout_marginStart="50dp"/>
+                android:layout_marginStart="50dp"
+                android:enabled="false"/>
         </LinearLayout>
 
         <TextView
@@ -149,13 +155,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Open/Close"
-                android:layout_marginStart="35dp"/>
+                android:layout_marginStart="35dp"
+                android:enabled="false"/>
             <Button
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:text="-"
                 android:id="@+id/btn_irrigationMinus"
-                android:layout_marginStart="25dp"/>
+                android:layout_marginStart="25dp"
+                android:enabled="false"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -169,7 +177,8 @@
                 android:layout_height="wrap_content"
                 android:text="+"
                 android:id="@+id/btn_irrigationPlus"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginStart="20dp"
+                android:enabled="false"/>
         </LinearLayout>
 
         <Button

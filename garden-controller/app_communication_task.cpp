@@ -19,24 +19,6 @@ void AppCommunicationTask::init(int period){
   Task::init(period);
 }
 
-/*String splitMsg(String str, char sep, int index)
-{
- int found = 0;
- int strIdx[] = { 0, -1 };
- int maxIdx = str.length() - 1;
-
- for (int i = 0; i <= maxIdx && found <= index; i++)
- {
-    if (str.charAt(i) == sep || i == maxIdx)
-    {
-      found++;
-      strIdx[0] = strIdx[1] + 1;
-      strIdx[1] = (i == maxIdx) ? i+1 : i;
-    }
- }
- return found > index ? str.substring(strIdx[0], strIdx[1]) : "";
-}*/
-
 String AppCommunicationTask::composeMsg(){
   return String(switchDL1)+"|"+String(switchDL2)+"|"+String(valueAL1)+"|"+String(valueAL2)+"|"+String(openIrrigation)+"|"+String(irrigationSpeed);
 }
@@ -50,13 +32,6 @@ void AppCommunicationTask::tick(){
         Msg* msg = msgService.receiveMsg();
         String msgContent = msg->getContent();
         
-        /*String dL1 = splitMsg(msgContent, '|', 1);  
-        String dL2 = splitMsg(msgContent, '|', 2);
-        String aL1 = splitMsg(msgContent, '|', 3);
-        String aL2 = splitMsg(msgContent, '|', 4);
-        String openIrrigationStr = splitMsg(msgContent, '|', 5);
-        String irrigationSpeedStr = splitMsg(msgContent, '|', 6);
-        String modalityStr = splitMsg(msgContent, '|', 7);*/
         StringSplitter *splitter = new StringSplitter(msgContent, '|', 7);
         String dL1 = splitter->getItemAtIndex(0);
         String dL2 = splitter->getItemAtIndex(1);
@@ -66,7 +41,7 @@ void AppCommunicationTask::tick(){
         String irrigationSpeedStr = splitter->getItemAtIndex(5);
         String modalityStr = splitter->getItemAtIndex(6);
 
-        lcd.print(msgContent);
+        lcd.print(modalityStr);
          
         if(!dL1.equals("-1")){
           switchDL1 = dL1.toInt();
@@ -87,7 +62,7 @@ void AppCommunicationTask::tick(){
           irrigationSpeed = irrigationSpeedStr.toInt();
         }
         if(!modalityStr.equals("-1")){
-          modality = modalityStr.toInt();
+          modality = modalityStr;
         }
      }
      break;
