@@ -32,6 +32,7 @@ public class DataService extends AbstractVerticle {
 	private int lastTemp = 0;
 	private String modality = "AUT";
 	private boolean isTemperatureInAlarm = false;
+	public int tempTemp = 5;
 	
 	public DataService(int port) {
 		values = new LinkedList<>();		
@@ -62,7 +63,7 @@ public class DataService extends AbstractVerticle {
 			int temperature = res.getInteger("temperature");
 			int lux = res.getInteger("lux");
 			
-			values.addFirst(new DataPoint(5, lux, modality));
+			values.addFirst(new DataPoint(tempTemp, lux, modality));
 			if (values.size() > MAX_SIZE) {
 				values.removeLast();
 			}

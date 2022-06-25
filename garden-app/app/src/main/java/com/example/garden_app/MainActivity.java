@@ -179,9 +179,11 @@ public class MainActivity extends AppCompatActivity {
             btChannel.sendMessage(message);
         });
 
-        findViewById(R.id.btn_alarm).setOnClickListener(l -> {
-            String message = "-1|-1|-1|-1|-1|-1|"+modality;
-            btChannel.sendMessage(message);
+        findViewById(R.id.img_notifications).setOnClickListener(l -> {
+            if(btChannel != null){
+                String message = "-1|-1|-1|-1|-1|-1|MAN";
+                btChannel.sendMessage(message);
+            }
         });
     }
 
@@ -265,6 +267,9 @@ public class MainActivity extends AppCompatActivity {
                     findViewById(R.id.btn_led2).setEnabled(true);
                     findViewById(R.id.btn_led1).setEnabled(true);
 
+                    findViewById(R.id.img_notifications).setClickable(true);
+                    findViewById(R.id.img_notifications).setFocusable(true);
+
                     connectBtn.setText("Return in auto mode");
 
                     String message = "-1|-1|-1|-1|-1|-1|MAN";
@@ -298,6 +303,9 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.btn_led2).setEnabled(false);
             findViewById(R.id.btn_led1).setEnabled(false);
 
+            findViewById(R.id.img_notifications).setClickable(false);
+            findViewById(R.id.img_notifications).setFocusable(false);
+
             connectBtn.setText("Require Manual Control");
         }
 
@@ -311,6 +319,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(modality.equals("ARM")){
             findViewById(R.id.img_notifications).setBackgroundResource(R.drawable.ic_baseline_notifications_24_error);
+        }else{
+            findViewById(R.id.img_notifications).setBackgroundResource(R.drawable.ic_baseline_notifications_24);
         }
 
         if(irrigationSpeed.equals("50")){

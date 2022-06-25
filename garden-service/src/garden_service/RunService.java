@@ -8,6 +8,7 @@ import io.vertx.core.Vertx;
 public class RunService {
 	private static boolean isLightSystemOn = false;
 	private static String modality = "AUT";
+	private static boolean alarmSent = false;
 
 	public static void main(String[] args) throws Exception{
 		Vertx vertx = Vertx.vertx();
@@ -38,6 +39,8 @@ public class RunService {
 				if(!mod.equals(modality) && mod.equals("MAN")) {
 					modality = "MAN";
 					service.setModality(modality);
+					alarmSent = false;
+					service.tempTemp = 4;
 				}else if(!mod.equals(modality) && mod.equals("AUT")) {
 					modality = "AUT";
 					service.setModality(modality);
@@ -64,10 +67,11 @@ public class RunService {
 				}
 			}
 			
-			if(service.getIsTemperatureInAlarm() && isIrrigationSleeping.equals("1")) {
+			if(!alarmSent && service.getIsTemperatureInAlarm() && isIrrigationSleeping.equals("1")) {
 				modality = "ARM";
 				service.setModality("ARM");
 				channel.sendMsg("-1|-1|-1|-1|1|-1|"+modality);
+				alarmSent = true;
 			}
 			
 			
