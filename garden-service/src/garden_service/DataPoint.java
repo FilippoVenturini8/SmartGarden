@@ -3,12 +3,10 @@ package garden_service;
 class DataPoint {
 	private int temperature;
 	private int lux;
-	private String modality;
 	
-	public DataPoint(int temperature, int lux, String modality) {
+	public DataPoint(int temperature, int lux) {
 		this.temperature = temperature;
 		this.lux = lux;
-		this.modality = modality;
 	}
 	
 	public int getTemperature() {
@@ -17,9 +15,5 @@ class DataPoint {
 	
 	public int getLux() {
 		return lux;
-	}
-	
-	public String getModality() {
-		return modality;
 	}
 }

@@ -9,8 +9,9 @@
 MsgServiceBT msgService(2,3);
 
 AppCommunicationTask::AppCommunicationTask(){
-  this->state = RECEIVING;
+  this->state = IDLE_STATE;
   this->tryReceiving = false;
+  this->messageSent = false;
   this->lastUpdateTime = millis();
   //lcd.init();
   //lcd.backlight();
@@ -19,8 +20,8 @@ AppCommunicationTask::AppCommunicationTask(){
 void AppCommunicationTask::init(int period){
   Task::init(period);
   msgService.init();
-  //Serial.begin(9600);
-  //while (!Serial){}
+  Serial.begin(9600);
+  while (!Serial){}
 }
 
 String AppCommunicationTask::composeMsg(){
@@ -30,6 +31,10 @@ String AppCommunicationTask::composeMsg(){
 void AppCommunicationTask::tick(){
   switch(state){
     case IDLE_STATE:
+      if(messageSent and millis() - lastUpdateTime < UPDATE_TIME){
+        break;
+      }
+      messageSent = false;
       if(tryReceiving){
         state = RECEIVING;
         tryReceiving = false;
@@ -43,8 +48,18 @@ void AppCommunicationTask::tick(){
         //lcd.clear();
         Msg* msg = msgService.receiveMsg();
         String msgContent = msg->getContent();
+
+        Serial.println(msgContent);
         
         StringSplitter *splitter = new StringSplitter(msgContent, '|', 7);
+
+        if(splitter->getItemCount() != 7){
+          state = IDLE_STATE;
+          Serial.println("NUM ELEMENTI ERRATO");
+          delete msg;
+          break;
+        }
+        
         String dL1 = splitter->getItemAtIndex(0);
         String dL2 = splitter->getItemAtIndex(1);
         String aL1 = splitter->getItemAtIndex(2);
@@ -76,16 +91,18 @@ void AppCommunicationTask::tick(){
         if(!modalityStr.equals("-1")){
           modality = modalityStr;
         }
+        Serial.print("VARIABILI: ");
+        Serial.println(composeMsg());
         delete msg;
+        delete splitter;
      }
      state = IDLE_STATE;
      break;
    case SENDING:
-      if(millis() - lastUpdateTime >= UPDATE_TIME){
-        msgService.sendMsg(Msg(composeMsg()));
-        state = IDLE_STATE;
-        lastUpdateTime = millis();
-      }
+      msgService.sendMsg(Msg(composeMsg()));
+      messageSent = true;
+      lastUpdateTime = millis();
+      state = IDLE_STATE;
       break;
   }
 }

@@ -7,7 +7,7 @@
 
 class AppCommunicationTask: public Task {
 
- const int UPDATE_TIME = 1000;
+ const int UPDATE_TIME = 500;
 
  enum { IDLE_STATE, RECEIVING, SENDING } state;
  int RXD = 2;
@@ -16,6 +16,7 @@ class AppCommunicationTask: public Task {
  String msg;
  bool tryReceiving;
  unsigned long lastUpdateTime;
+ bool messageSent;
  
 public:
 

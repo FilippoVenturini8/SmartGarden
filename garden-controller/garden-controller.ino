@@ -25,7 +25,7 @@ void setup() {
   sched.addTask(serviceCommunicationTask);
 
   Task* appCommunicationTask = new AppCommunicationTask();
-  appCommunicationTask->init(100);
+  appCommunicationTask->init(50);
   sched.addTask(appCommunicationTask);
 
   Task* lightSystemTask = new LightSystemTask(8,7,6,5);

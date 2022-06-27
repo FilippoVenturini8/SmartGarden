@@ -66,7 +66,7 @@ public class DataService extends AbstractVerticle {
 			int temperature = res.getInteger("temperature");
 			int lux = res.getInteger("lux");
 			
-			values.addFirst(new DataPoint(tempTemp, lux, modality));
+			values.addFirst(new DataPoint(tempTemp, lux));
 			if (values.size() > MAX_SIZE) {
 				values.removeLast();
 			}
@@ -135,7 +135,8 @@ public class DataService extends AbstractVerticle {
 		JsonObject data = new JsonObject();
 		data.put("lux", p.getLux());
 		data.put("temperature", p.getTemperature());
-		data.put("modality", p.getModality());
+		data.put("modality", this.modality);
+		data.put("irrigationSleeping", this.isIrrigationSleeping);
 		arr.add(data);
 		routingContext.response()
 			.putHeader("content-type", "application/json")

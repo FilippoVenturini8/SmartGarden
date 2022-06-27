@@ -6,8 +6,8 @@
 
 class IrrigationSystemTask: public Task {
 
- const int WORK_TIME = 200000;
- const int SLEEP_TIME = 10000;
+ const long WORK_TIME = 20000;
+ const long SLEEP_TIME = 10000;
  enum { CLOSED, OPEN, SLEEP_STATE} state;
  int pinServo;
  ServoMotor* servo;

@@ -33,6 +33,7 @@ public class GardenDashboard {
 		JLabel lblModality = new JLabel("Modality: ");
 		JLabel lblLux = new JLabel("Luminosity: ");
 		JLabel lblTmp = new JLabel("Temperature: ");
+		JLabel lblIrrigation = new JLabel("Irrigation System: ");
 		
 		lblTitle.setFont(new Font("Serif", Font.BOLD, 30));
 		
@@ -40,11 +41,13 @@ public class GardenDashboard {
 		lblModality.setBounds(290, 100, 300, 50);
 		lblLux.setBounds(290, 150, 200, 50);
 		lblTmp.setBounds(290, 200, 200, 50);
+		lblIrrigation.setBounds(290, 250, 200, 50);
 		
 		panel.add(lblTitle);
 		panel.add(lblModality);
 		panel.add(lblLux);
 		panel.add(lblTmp);
+		panel.add(lblIrrigation);
 		
 		frame.getContentPane().add( panel );
 		
@@ -58,9 +61,33 @@ public class GardenDashboard {
 			  .onSuccess(res -> { 
 				  System.out.println("Getting - Received response with status code: " + res.statusCode());
 				  JsonArray response = res.bodyAsJsonArray();
-				  lblModality.setText("Modality: "+response.getJsonObject(0).getString("modality"));
+				  
+				  String modality = response.getJsonObject(0).getString("modality");
+				  
+				  switch(modality) {
+					  case "AUT":
+						  lblModality.setText("Modality: AUTO");
+						  break;
+					  case "MAN":
+						  lblModality.setText("Modality: MANUAL");
+						  break;
+					  case "ARM":
+						  lblModality.setText("Modality: ALARM");
+						  break;
+				  }
+				  
 				  lblLux.setText("Luminosity: "+response.getJsonObject(0).getString("lux"));
 				  lblTmp.setText("Temperature: "+response.getJsonObject(0).getString("temperature"));
+				  
+				  String isIrrigationSleeping = response.getJsonObject(0).getString("irrigationSleeping");
+				  
+				  if(isIrrigationSleeping.equals("true")) {
+					  lblIrrigation.setText("Irrigation System: SLEEPING");  
+				  }else if(isIrrigationSleeping.equals("false")) {
+					  lblIrrigation.setText("Irrigation System: ACTIVE");
+				  }
+				  
+				  
 			      System.out.println(response.encodePrettily());
 			  })
 			  .onFailure(err ->

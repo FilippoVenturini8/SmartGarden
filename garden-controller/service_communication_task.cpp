@@ -40,7 +40,7 @@ void ServiceCommunicationTask::tick(){
 
     case SEND:
       lcd.print(modality+"|"+isIrrigationSleeping);
-      Serial.println(modality+"|"+isIrrigationSleeping);
+      //Serial.println(modality+"|"+isIrrigationSleeping);
       state = WAITING;
       break;
   }

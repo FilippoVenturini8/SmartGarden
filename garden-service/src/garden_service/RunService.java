@@ -36,6 +36,12 @@ public class RunService {
 				mod = splittedMsg[0];
 				isIrrigationSleeping = splittedMsg[1];
 				
+				if(isIrrigationSleeping.equals("0")){
+					service.setIsIrrigationSleeping(false);
+				}else if (isIrrigationSleeping.equals("1")) {
+					service.setIsIrrigationSleeping(true);
+				}
+				
 				if(!mod.equals(modality) && mod.equals("MAN")) {
 					modality = "MAN";
 					service.setModality(modality);
