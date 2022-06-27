@@ -48,7 +48,7 @@ void IrrigationSystemTask::tick(){
         isIrrigationSleeping = 1;
         break;
       }
-      if(openIrrigation == 0 or irrigationSpeed == 0){
+      if(openIrrigation == 0){
         this->servo->off();
         state = CLOSED;
       }

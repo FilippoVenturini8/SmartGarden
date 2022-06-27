@@ -95,7 +95,7 @@ void ServiceCommunicationTask::readMsg(){
     if(!irrigationSpeedStr.equals("-1")){
       irrigationSpeed = irrigationSpeedStr.toInt();
     }
-    if(!modalityStr.equals("-1")){
+    if(modalityStr.equals("MAN") or modalityStr.equals("AUT") or modalityStr.equals("ARM")){
       modality = modalityStr;
     }
   }

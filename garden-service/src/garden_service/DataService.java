@@ -26,13 +26,16 @@ public class DataService extends AbstractVerticle {
 	private LinkedList<DataPoint> values;
 	private boolean activateLightSystem = false;
 	private int analogicLightValue = 0;
-	private boolean toggleIrrigationSystem = false;
-	private int irrigationSpeed = 0;
+	private boolean openIrrigationSystem = false;
+	private boolean closeIrrigationSystem = false;
+	private boolean updateIrrigationSystemSpeed = false;
+	private boolean isIrrigationSleeping;
+	private int irrigationSpeed = 50;
 	private int lastLux = 0;
 	private int lastTemp = 0;
 	private String modality = "AUT";
 	private boolean isTemperatureInAlarm = false;
-	public int tempTemp = 5;
+	public int tempTemp = 1;
 	
 	public DataService(int port) {
 		values = new LinkedList<>();		
@@ -78,13 +81,26 @@ public class DataService extends AbstractVerticle {
 	private void checkData() {
 		DataPoint lastMeasurement = values.getFirst();
 		int lux = lastMeasurement.getLux();
-		if(lux < 5 && lastLux != lux) {
-			activateLightSystem = true;
-			analogicLightValue = (int)(((lux*8)/5)-1);
+		
+		if(lastLux != lux) {
+			if(lux < 5) {
+				activateLightSystem = true;
+				analogicLightValue = (int)(((lux*8)/5)-1);
+			}
+			
+			if(lux >= 5 && activateLightSystem) {
+				activateLightSystem = false;
+			}
+			
+			if(lux < 2 && !this.openIrrigationSystem) {
+				this.openIrrigationSystem = true;
+			}
+			
+			if(lux >=2 && !this.closeIrrigationSystem){
+				this.closeIrrigationSystem = true;
+			}
+			
 			lastLux = lux;
-			System.out.println(analogicLightValue);
-		}else if(lux >= 5 && activateLightSystem) {
-			activateLightSystem = false;
 		}
 		
 		int temp = lastMeasurement.getTemperature();
@@ -92,23 +108,23 @@ public class DataService extends AbstractVerticle {
 		if(temp != lastTemp) {
 			switch(temp) {
 				case 1:
-					irrigationSpeed = 0;
-					break;
-				case 2:
 					irrigationSpeed = 50;
 					break;
-				case 3:
+				case 2:
 					irrigationSpeed = 40;
 					break;
-				case 4:
+				case 3:
 					irrigationSpeed = 30;
 					break;
-				case 5:
+				case 4:
 					irrigationSpeed = 20;
+					break;
+				case 5:
+					irrigationSpeed = 10;
 					this.isTemperatureInAlarm = true;
 					break;
 			}
-			toggleIrrigationSystem = true;
+			this.updateIrrigationSystemSpeed = true;
 		}
 		
 	}
@@ -146,20 +162,36 @@ public class DataService extends AbstractVerticle {
 		this.modality = modality;
 	}
 	
-	public boolean toggleIrrigationSystem() {
-		return this.toggleIrrigationSystem;
+	public boolean getOpenIrrigationSystem() {
+		return this.openIrrigationSystem;
+	}
+	
+	public boolean getCloseIrrigationSystem() {
+		return this.closeIrrigationSystem;
 	}
 	
 	public boolean getIsTemperatureInAlarm() {
 		return this.isTemperatureInAlarm;
 	}
 	
-	public void setToggleIrrigationSystem(boolean value) {
-		this.toggleIrrigationSystem = value;
+	public void setOpenIrrigationSystem(boolean value) {
+		this.openIrrigationSystem = value;
+	}
+	
+	public void setCloseIrrigationSystem(boolean value) {
+		this.closeIrrigationSystem = value;
 	}
 	
 	public int getIrrigationSpeed() {
 		return this.irrigationSpeed;
+	}
+	
+	public boolean getUpdateIrrigationSystemSpeed() {
+		return this.updateIrrigationSystemSpeed;
+	}
+	
+	public void setIsIrrigationSleeping(boolean value) {
+		this.isIrrigationSleeping = value;
 	}
 
 }

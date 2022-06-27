@@ -160,11 +160,8 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_irrigationPlus).setOnClickListener(l -> {
             String speedToAppend = "-1";
-            if(Integer.parseInt(irrigationSpeed) >= 10){
+            if(Integer.parseInt(irrigationSpeed) >= 20){
                 speedToAppend = String.valueOf(Integer.parseInt(irrigationSpeed)-10);
-            }
-            if(Integer.parseInt(irrigationSpeed) == 0){
-                speedToAppend = "50";
             }
             String message = "-1|-1|-1|-1|-1|"+speedToAppend+"|-1";
             btChannel.sendMessage(message);
@@ -331,8 +328,6 @@ public class MainActivity extends AppCompatActivity {
             txtIrrigationSpeed.setText("3");
         }else if(irrigationSpeed.equals("20")){
             txtIrrigationSpeed.setText("4");
-        }else if(irrigationSpeed.equals("0")){
-            txtIrrigationSpeed.setText("0");
         }
     }
 }

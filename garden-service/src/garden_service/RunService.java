@@ -56,21 +56,23 @@ public class RunService {
 					channel.sendMsg("0|0|0|0|-1|-1|-1");
 					isLightSystemOn = false;
 				}
-				if(service.toggleIrrigationSystem()) {
+				
+				if(service.getOpenIrrigationSystem()) {
 					int irrigationSpeed = service.getIrrigationSpeed();
-					if(irrigationSpeed == 0) {
-						channel.sendMsg("-1|-1|-1|-1|0|0|-1");
-					}else {
-						channel.sendMsg("-1|-1|-1|-1|1|"+irrigationSpeed+"|-1");
-					}
-					service.setToggleIrrigationSystem(false);
+					channel.sendMsg("-1|-1|-1|-1|1|"+irrigationSpeed+"|-1");
+					service.setOpenIrrigationSystem(false);
+				}
+				
+				if(service.getCloseIrrigationSystem()) {
+					channel.sendMsg("-1|-1|-1|-1|0|-1|-1");
+					service.setCloseIrrigationSystem(false);
 				}
 			}
 			
 			if(!alarmSent && service.getIsTemperatureInAlarm() && isIrrigationSleeping.equals("1")) {
 				modality = "ARM";
 				service.setModality("ARM");
-				channel.sendMsg("-1|-1|-1|-1|1|-1|"+modality);
+				channel.sendMsg("-1|-1|-1|-1|-1|-1|"+modality);
 				alarmSent = true;
 			}
 			
