@@ -35,7 +35,7 @@ public class DataService extends AbstractVerticle {
 	private int lastTemp = 0;
 	private String modality = "AUT";
 	private boolean isTemperatureInAlarm = false;
-	public int tempTemp = 1;
+	public int tempTemp = 5;
 	
 	public DataService(int port) {
 		values = new LinkedList<>();		

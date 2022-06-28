@@ -20,7 +20,6 @@ AppCommunicationTask::AppCommunicationTask(){
 void AppCommunicationTask::init(int period){
   Task::init(period);
   msgService.init();
-  Serial.begin(9600);
   while (!Serial){}
 }
 
@@ -48,8 +47,6 @@ void AppCommunicationTask::tick(){
         //lcd.clear();
         Msg* msg = msgService.receiveMsg();
         String msgContent = msg->getContent();
-
-        Serial.println(msgContent);
         
         StringSplitter *splitter = new StringSplitter(msgContent, '|', 7);
 
@@ -91,8 +88,6 @@ void AppCommunicationTask::tick(){
         if(!modalityStr.equals("-1")){
           modality = modalityStr;
         }
-        Serial.print("VARIABILI: ");
-        Serial.println(composeMsg());
         delete msg;
         delete splitter;
      }
