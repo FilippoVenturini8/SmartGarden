@@ -311,8 +311,6 @@ public class MainActivity extends AppCompatActivity {
     private void updateUI(){
         txtLed3.setText(led3);
         txtLed4.setText(led4);
-        TextView mod = findViewById(R.id.modality_txtView);
-        mod.setText(modality);
 
         if(modality.equals("ARM")){
             findViewById(R.id.img_notifications).setBackgroundResource(R.drawable.ic_baseline_notifications_24_error);

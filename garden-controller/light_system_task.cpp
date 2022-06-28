@@ -2,9 +2,7 @@
 #include "digital_led_impl.h"
 #include "analog_led_impl.h"
 #include "shared_variables.h"
-#include <Arduino.h>
-#include <LiquidCrystal_I2C.h>
-//LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4); 
+#include <Arduino.h> 
 
 LightSystemTask::LightSystemTask(int pinDL1, int pinDL2, int pinAL1, int pinAL2){
   this->state = IDLE_STATE;
@@ -17,11 +15,7 @@ LightSystemTask::LightSystemTask(int pinDL1, int pinDL2, int pinAL1, int pinAL2)
   this->lastDL1 = 0;
   this->lastDL2 = 0;
   this->lastAL1 = 0;
-  this->lastAL2 = 0;
-
-  Serial.begin(9600);  
-  //lcd.init();
-  //lcd.backlight();
+  this->lastAL2 = 0; 
 }
  
 void LightSystemTask::init(int period){
@@ -33,10 +27,11 @@ void LightSystemTask::init(int period){
 }
  
 void LightSystemTask::tick(){
-  //lcd.print(switchDL1);
   switch(state){
     case IDLE_STATE:
-      if(switchDL1 != lastDL1){
+      if(modality.equals("AUT") and switchDL1 != lastDL1){
+        state = AUTO_MANAGEMENT;
+      }else if(switchDL1 != lastDL1){
         state = DL1_SWITCHING;
         lastDL1 = switchDL1;
       }else if(switchDL2 != lastDL2){
@@ -82,6 +77,28 @@ void LightSystemTask::tick(){
         int mappedValue2 = map(valueAL2, 0, 4, 0, 255);
         this->analogLight2->setIntensity(mappedValue2);
       }
+      state = IDLE_STATE;
+      break;
+
+    case AUTO_MANAGEMENT:
+      if(switchDL1 == 1){
+        this->digitalLight1->switchOn();
+        this->digitalLight2->switchOn();
+
+        int mappedValue1 = map(valueAL1, 0, 4, 0, 255);
+        this->analogLight1->setIntensity(mappedValue1);
+        int mappedValue2 = map(valueAL2, 0, 4, 0, 255);
+        this->analogLight2->setIntensity(mappedValue2);
+      }else{
+        this->digitalLight1->switchOff();
+        this->digitalLight2->switchOff();
+        this->analogLight1->setIntensity(0);
+        this->analogLight2->setIntensity(0);
+      }
+      lastDL1 = switchDL1;
+      lastDL2 = switchDL2;
+      lastAL1 = valueAL1;
+      lastAL2 = valueAL2;
       state = IDLE_STATE;
       break;
   }

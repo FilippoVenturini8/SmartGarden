@@ -1,11 +1,9 @@
 #include "service_communication_task.h"
 #include "shared_variables.h"
 #include <Arduino.h>
-#include <LiquidCrystal_I2C.h>
 
 bool msgAvailable;
 String receivedMsg;
-LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4); 
 
 ServiceCommunicationTask::ServiceCommunicationTask(){
   state = WAITING;
@@ -13,8 +11,6 @@ ServiceCommunicationTask::ServiceCommunicationTask(){
   receivedMsg = "";
   lastModality = modality;
   wasIrrigationSleeping = isIrrigationSleeping;
-  lcd.init();
-  lcd.backlight();
 }
  
 void ServiceCommunicationTask::init(int period){
@@ -39,7 +35,6 @@ void ServiceCommunicationTask::tick(){
       break;
 
     case SEND:
-      lcd.print(modality+"|"+isIrrigationSleeping);
       Serial.println(modality+"|"+isIrrigationSleeping);
       state = WAITING;
       break;
@@ -67,8 +62,6 @@ String splitString(String str, char sep, int index)
 
 void ServiceCommunicationTask::readMsg(){
   if(receivedMsg != ""){
-    //lcd.clear();
-    //lcd.print(receivedMsg);
     String dL1 = splitString(receivedMsg, '|', 0);
     String dL2 = splitString(receivedMsg, '|', 1);
     String aL1 = splitString(receivedMsg, '|', 2);

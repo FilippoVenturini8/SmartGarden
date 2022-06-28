@@ -35,7 +35,7 @@ void setup() {
   Task* irrigationSystemTask = new IrrigationSystemTask(9);
   irrigationSystemTask->init(50);
   sched.addTask(irrigationSystemTask);
-  
+
   Serial.begin(9600);
 }
 

@@ -7,7 +7,7 @@
 
 class LightSystemTask: public Task {
 
- enum { IDLE_STATE, DL1_SWITCHING, DL2_SWITCHING, AL1_MANAGEMENT, AL2_MANAGEMENT} state;
+ enum { IDLE_STATE, DL1_SWITCHING, DL2_SWITCHING, AL1_MANAGEMENT, AL2_MANAGEMENT, AUTO_MANAGEMENT} state;
  DigitalLed* digitalLight1;
  DigitalLed* digitalLight2;
  AnalogLed* analogLight1;

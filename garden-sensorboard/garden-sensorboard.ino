@@ -8,6 +8,8 @@
 #include "photoresistor.h"
 #include "photoresistor_impl.h"
 
+#include "ArduinoJson.h"
+
 const char* ssid = "TIM-22562475";
 const char* password = "o98UxyVtTv5Uc5z1ks5cIp8t";
 
@@ -16,6 +18,9 @@ const char *serviceURI = "http://192.168.1.96:8080";
 DigitalLed* led;
 TempSensor* tempSensor;
 Photoresistor* photoresistor;
+
+bool requestData = false;
+bool isInAlarm = false;
 
 void connectToWifi(const char* ssid, const char* password){
   WiFi.begin(ssid, password);
@@ -33,6 +38,7 @@ void setup() {
   led = new DigitalLedImpl(4);
   tempSensor = new TempSensorImpl(32);
   photoresistor = new PhotoresistorImpl(35);
+  led->switchOn();
   Serial.begin(115200); 
   connectToWifi(ssid, password);
 }
@@ -53,20 +59,64 @@ int sendData(String address, float temperature, int lux){
    return retCode;
 }
 
+void receiveData(String address){
+  HTTPClient http;
+  
+  http.begin(address + "/api/data");
+      
+  // Send HTTP GET request
+  int httpResponseCode = http.GET();
+    
+  if (httpResponseCode>0) {
+    //Serial.print("HTTP Response code: ");
+    //Serial.println(httpResponseCode);
+    String payload = http.getString();
+    DynamicJsonDocument doc(1024);
+    deserializeJson(doc, payload);
+    const String modality = doc[0]["modality"];
+    //Serial.println(modality);
+    if(modality.equals("ARM") and !isInAlarm){
+      led->switchOff();
+      isInAlarm = true;
+    }
+
+    if(!modality.equals("ARM") and isInAlarm){
+      led->switchOn();
+      isInAlarm = false;
+      requestData = false;
+    }
+  } else {
+    Serial.print("Error code: ");
+    Serial.println(httpResponseCode);
+  }
+  
+  // Free resources
+  http.end();
+}
+
 void loop() {
   if (WiFi.status()== WL_CONNECTED){      
     int lux = photoresistor->getLux();
     //float temp = tempSensor->getTemperature();
     float temp = 20.0;
+    //int mappedTemp = 5;
     int mappedTemp = map(temp, 17.0, 25.0, 1, 5);
+    if(mappedTemp == 5){
+      requestData = true;
+    }
+    requestData = true;
     int code = sendData(serviceURI, mappedTemp, lux);
     if (code == 200){
-       Serial.println("ok");   
+       //Serial.println("ok");   
     } else {
-       Serial.println(String("error: ") + code);
+       //Serial.println(String("error: ") + code);
     }
     
     delay(1000);
+
+    if(requestData){
+      receiveData(serviceURI);
+    }
 
   } else {
     Serial.println("WiFi Disconnected... Reconnect.");

@@ -2,9 +2,7 @@
 #include "shared_variables.h"
 #include "MsgServiceBT.h"
 #include "StringSplitter.h"
-#include <Arduino.h>
-#include <LiquidCrystal_I2C.h>
-//LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27,20,4); 
+#include <Arduino.h> 
 
 MsgServiceBT msgService(2,3);
 
@@ -13,8 +11,6 @@ AppCommunicationTask::AppCommunicationTask(){
   this->tryReceiving = false;
   this->messageSent = false;
   this->lastUpdateTime = millis();
-  //lcd.init();
-  //lcd.backlight();
 }
  
 void AppCommunicationTask::init(int period){
@@ -44,7 +40,6 @@ void AppCommunicationTask::tick(){
       break;
     case RECEIVING:
       if (msgService.isMsgAvailable()) {
-        //lcd.clear();
         Msg* msg = msgService.receiveMsg();
         String msgContent = msg->getContent();
         
@@ -52,7 +47,6 @@ void AppCommunicationTask::tick(){
 
         if(splitter->getItemCount() != 7){
           state = IDLE_STATE;
-          Serial.println("NUM ELEMENTI ERRATO");
           delete msg;
           break;
         }
@@ -64,8 +58,6 @@ void AppCommunicationTask::tick(){
         String openIrrigationStr = splitter->getItemAtIndex(4);
         String irrigationSpeedStr = splitter->getItemAtIndex(5);
         String modalityStr = splitter->getItemAtIndex(6);
-
-        //lcd.print(modalityStr);
          
         if(!dL1.equals("-1")){
           switchDL1 = dL1.toInt();
@@ -85,7 +77,7 @@ void AppCommunicationTask::tick(){
         if(!irrigationSpeedStr.equals("-1")){
           irrigationSpeed = irrigationSpeedStr.toInt();
         }
-        if(!modalityStr.equals("-1")){
+        if(modalityStr.equals("MAN") or modalityStr.equals("AUT") or modalityStr.equals("ARM")){
           modality = modalityStr;
         }
         delete msg;
