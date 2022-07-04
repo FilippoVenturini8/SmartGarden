@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Smart Garden"
+                android:textColor="@color/black"
+                android:textSize="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"/>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_baseline_notifications_24"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="120dp"
+                android:id="@+id/img_notifications"
+                android:scaleType="fitXY"
+                android:clickable="false"
+                android:focusable="false"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Light System"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Led 1"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_marginStart="75dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Led 3"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_marginStart="65dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Led 4"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_marginStart="40dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ON/OFF"
+                android:id="@+id/btn_led1"
+                android:layout_marginStart="50dp"
+                android:enabled="false"/>
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:id="@+id/btn_led3Plus"
+                android:layout_marginStart="50dp"
+                android:enabled="false"/>
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:id="@+id/btn_led4Plus"
+                android:layout_marginStart="50dp"
+                android:enabled="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Led 2"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_marginStart="75dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="0"
+                android:textColor="@color/black"
+                android:id="@+id/led3_value"
+                android:textSize="20dp"
+                android:layout_marginStart="80dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/led4_value"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_marginStart="80dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ON/OFF"
+                android:id="@+id/btn_led2"
+                android:layout_marginStart="50dp"
+                android:enabled="false"/>
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:id="@+id/btn_led3Minus"
+                android:layout_marginStart="50dp"
+                android:enabled="false"/>
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:id="@+id/btn_led4Minus"
+                android:layout_marginStart="50dp"
+                android:enabled="false"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Irrigation System"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="20dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+            <Button
+                android:id="@+id/irrigation_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Open/Close"
+                android:layout_marginStart="35dp"
+                android:enabled="false"/>
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:id="@+id/btn_irrigationMinus"
+                android:layout_marginStart="25dp"
+                android:enabled="false"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:id="@+id/irrigation_speed"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_marginStart="20dp"/>
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:id="@+id/btn_irrigationPlus"
+                android:layout_marginStart="20dp"
+                android:enabled="false"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/connectBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Require Manual Control"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="50dp"/>
+
+        <TextView
+            android:id="@+id/statusLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Status : not connected"
+            android:visibility="invisible"/>
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="CHAT HISTORY"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/chatLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
+
+</ScrollView>
