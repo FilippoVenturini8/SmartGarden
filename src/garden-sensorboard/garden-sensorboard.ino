@@ -97,8 +97,7 @@ void receiveData(String address){
 void loop() {
   if (WiFi.status()== WL_CONNECTED){      
     int lux = photoresistor->getLux();
-    //float temp = tempSensor->getTemperature();
-    float temp = 35.0;
+    float temp = tempSensor->getTemperature();
     int mappedTemp = map(temp, 27.0, 35.0, 1, 5);
     if(mappedTemp == 5){
       requestData = true;
